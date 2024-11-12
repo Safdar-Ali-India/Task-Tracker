@@ -12,64 +12,87 @@
             align-items: center;
             min-height: 100vh;
             background-color: #f4f4f9;
+            margin: 0;
         }
         .task-tracker {
-            width: 300px;
-            background-color: #fff;
+            width: 360px;
+            background-color: #ffffff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
         }
         .task-tracker h2 {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
         }
         .task-input {
             display: flex;
-            margin-bottom: 20px;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 5px;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
         }
         .task-input input {
             flex: 1;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 8px;
+            font-size: 14px;
+            border: none;
             outline: none;
+            background: none;
+            color: #666;
         }
         .task-input button {
-            margin-left: 5px;
-            padding: 10px;
-            font-size: 16px;
+            margin-left: 8px;
+            padding: 6px 10px;
             border: none;
-            border-radius: 4px;
-            background-color: #007bff;
+            border-radius: 6px;
+            background-color: #333;
             color: white;
             cursor: pointer;
         }
         .task-list {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
         .task-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 10px 5px;
             border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        .task-item:hover {
+            background-color: #f8f8f8;
         }
         .task-item.completed .task-text {
             text-decoration: line-through;
-            color: #888;
+            color: #aaa;
         }
         .task-item .task-text {
             flex: 1;
             margin: 0 10px;
+            font-size: 14px;
+            color: #333;
+        }
+        .task-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
         }
         .task-item button {
             border: none;
             background: none;
             cursor: pointer;
-            color: #ff4d4d;
-            font-size: 16px;
+            color: #e74c3c;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -90,7 +113,6 @@
             const taskList = document.getElementById('taskList');
             taskList.innerHTML = '';
 
-            // Sort tasks to place completed ones at the end
             const sortedTasks = [...tasks].sort((a, b) => a.completed - b.completed);
 
             sortedTasks.forEach((task, index) => {
