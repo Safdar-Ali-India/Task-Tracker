@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .task-tracker {
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .task-tracker h2 {
+            margin-bottom: 20px;
+        }
+        .task-input {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .task-input input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        .task-input button {
+            margin-left: 5px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .task-item .task-text {
+            flex: 1;
+            margin: 0 10px;
+        }
+        .task-item button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #ff4d4d;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="task-tracker">
+        <h2>Task Tracker</h2>
+        <div class="task-input">
+            <input type="text" id="taskInput" placeholder="Start writing and press enter to create task" />
+            <button onclick="addTask()">➕</button>
+        </div>
+        <ul id="taskList" class="task-list"></ul>
+    </div>
+
+    <script>
+        let tasks = [];
+
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+
+            // Sort tasks to place completed ones at the end
+            const sortedTasks = [...tasks].sort((a, b) => a.completed - b.completed);
+
+            sortedTasks.forEach((task, index) => {
+                const taskItem = document.createElement('li');
+                taskItem.className = 'task-item';
+                if (task.completed) taskItem.classList.add('completed');
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.completed;
+                checkbox.onclick = () => toggleComplete(index);
+
+                const taskText = document.createElement('span');
+                taskText.className = 'task-text';
+                taskText.textContent = task.description;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = '🗑️';
+                deleteButton.onclick = () => deleteTask(index);
+
+                taskItem.appendChild(checkbox);
+                taskItem.appendChild(taskText);
+                taskItem.appendChild(deleteButton);
+                taskList.appendChild(taskItem);
+            });
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const description = taskInput.value.trim();
+            if (description) {
+                tasks.push({ description, completed: false });
+                taskInput.value = '';
+                renderTasks();
+            }
+        }
+
+        function toggleComplete(index) {
+            tasks[index].completed = !tasks[index].completed;
+            renderTasks();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            renderTasks();
+        }
+
+        document.getElementById('taskInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        renderTasks();
+    </script>
+</body>
+</html>
